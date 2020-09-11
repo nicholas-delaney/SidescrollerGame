@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Merle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Epilogue' rel='stylesheet'>
+  <link rel="stylesheet" type="text/css" href="/client/style.css">
+</head>
+
+<body>
+
+  <h1 id="title">Super Merle</h1>
+
+  <div id="signDiv">
+    Username: <input id="signDiv-username" type="text"></input>
+    Password: <input id="signDiv-password" type="password"></input>
+    <button id="signDiv-signIn" type="button"> Sign In </button>
+    <button id="signDiv-signUp" type="button"> Sign Up </button>
+  </div>
+
+  <div id="wrapper">
+    <canvas id="can" width="5000" height="2000" style="position:absolute;"></canvas>
+  </div>
+
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src='client/js/Entity.js'></script>
+<script src='client/js/EntityManager.js'></script>
+<script src='client/js/Components.js'></script>
+<script src='client/js/Physics.js'></script>
+<script src='client/js/GameState_LevelEditor.js'></script>
+<script src='client/js/GameState_Play.js'></script>
+<script src='client/js/GameState_MainMenu.js'></script>
+<script src='client/js/GameState_LevelSelect.js'></script>
+<script src='client/js/GameEngine.js'></script>
+<script src='client/js/Assets.js'></script>
+
+<script>
+  // global variables
+  let canvas = document.getElementById("can");
+  let socket = io();
+  let levels = [];
+  let canvasWidth = 5000;
+  let canvasHeight = 2000;
+  let ctx = canvas.getContext("2d");
+  let wrapper = document.getElementById("wrapper");
+  const assets = new Assets();
+  let play = null;
+  let levelEditor = new GameState_LevelEditor(canvas, wrapper);
+  let mainMenu = new GameState_MainMenu();
+  let levelSelect = new GameState_LevelSelect(levels);
+  let game = new GameEngine();
+  // sign in / sign up
+  let signDiv = document.getElementById("signDiv");
+  let signDivUsername = document.getElementById("signDiv-username");
+  let signDivSignIn = document.getElementById("signDiv-signIn");
+  let signDivSignUp = document.getElementById("signDiv-signUp");
+  let signDivPassword = document.getElementById("signDiv-password");
+  let title = document.getElementById("title");
+  signDivSignUp.onclick = () => {
+    socket.emit('signUp', {
+      username: signDivUsername.value,
+      password: signDivPassword.value
+    });
+  };
+  socket.on('signUpResponse', (data) => {
+    if (data.success) {
+      alert(data.msg);
+    }
+    else {
+      alert(data.msg);
+    }
+  });
+  signDivSignIn.onclick = () => {
+    socket.emit('signIn', {
+      username: signDivUsername.value,
+      password: signDivPassword.value
+    });
+  };
+  socket.on('signInResponse', (data) => {
+    if (data.success) {
+      title.style.display = 'none';
+      signDiv.style.display = 'none';
+      wrapper.style.display = 'inline-block';
+    }
+    else {
+      alert(data.msg);
+    }
+  });
+
+
+  // main loop
+  setInterval(function () {
+    game.run();
+  }, 60);
+
+  // save / load levels
+  socket.on('nameTaken', (data) => {
+    let rewrite = prompt("type yes to overwrite level");
+    if (rewrite === "yes") {
+      socket.emit('overwriteLevel', {
+        name: data.name,
+        lvlData: data.lvlData
+      });
+    }
+    else {
+      alert("Level not saved");
+    }
+  });
+
+  socket.on('levelSaved', (data) => {
+    alert('Level: ' + data.name + ' successfully saved!');
+  });
+
+  socket.on('levelNotFound', (data) => {
+    alert('Level: ' + data.name + ' not found.');
+  });
+
+  socket.on('levelToBeLoaded', (data) => {
+    levelEditor.loadLevel(data.lvlData);
+    alert('Level: ' + data.name + ' successfully loaded!');
+  });
+  // return level info from database
+  socket.on('getLevels', (data) => {
+    levels = data.levels;
+    levelSelect = new GameState_LevelSelect(levels);
+  });
+</script>
+</html>

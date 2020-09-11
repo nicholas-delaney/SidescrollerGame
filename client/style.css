@@ -1,0 +1,59 @@
+html{
+    background-color: darkblue;
+}
+
+#wrapper {
+    width: 96%;
+    height: 96%;
+    position: absolute;
+    overflow: hidden;
+    display: inline-block;
+}
+div#signDiv {
+    font-family: 'Epilogue';
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: red;
+    padding: 1%;
+    margin: 2% 30% 0% 30%;
+    border: 1px solid black;
+    border-radius: 8px;
+    display: none;
+}
+input#signDiv-username, input#signDiv-password {
+    padding: 5px 5px;
+    margin: 8px 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+div#buttons {
+    flex-direction: row;
+}
+button {
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 5px;
+    margin-left: 15%;
+    border-radius: 8px;
+    width: 25%;
+}
+button:hover {
+    background-color: white;
+    color: black;
+}
+
+h1 {
+    display: none;
+    color: red;
+    font-family: 'Bangers';
+    font-size: 80px;
+    text-align: center;
+    margin: 4% 30% 0% 30%;
+}
