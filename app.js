@@ -3,7 +3,7 @@ const express = require('express');
 let app = express();
 // mongoDB boilerplate
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://nicholasdelaney:79130Hoe!@nickdb-vlvu9.mongodb.net/NickDB?retryWrites=true&w=majority";
+const uri = "mongodb+srv://nicholasdelaney:" + process.env.DB_PASSWORD + "@nickdb-vlvu9.mongodb.net/NickDB?retryWrites=true&w=majority";
 const dbName = "NickDB";
 const http = require('http').createServer(app);
 app.get('/', (req, res) => {
