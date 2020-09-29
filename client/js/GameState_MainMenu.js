@@ -94,9 +94,15 @@ class GameState_MainMenu {
 			ctx.fillText(this.menuStrings[i - 1], 480, 50 * i + 120);
 		}
 		ctx.fillRect(450, 95 + ((this.menuIndex + 1) * 50), 20, 20);
+		// draw author credits
+		ctx.fillStyle = "#DD1021";
+		ctx.fillRect(20, 290, 290, 100);
+		ctx.fillStyle = "white";
+		ctx.font = "20px Impact";
+		ctx.fillText("Created by: Nicholas Delaney", 40, 330);
+		ctx.fillText("nicholasndelaney@gmail.com", 40, 360);
 		// draw menus instructions
 		ctx.fillStyle = "#FF1212"
-		ctx.font = "20px Impact";
 		ctx.fillText("MENUS INSTRUCTIONS", 450, 330);
 		ctx.fillStyle = "white"
 		ctx.fillText("W:", 450, 355);

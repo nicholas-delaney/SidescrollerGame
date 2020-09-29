@@ -1,5 +1,3 @@
-// player, enemy and environment assets by hugues laborde https://hugues-laborde.itch.io/
-// load / get all assets needed for the game
 class Assets {
     constructor() {
         this.player = {
